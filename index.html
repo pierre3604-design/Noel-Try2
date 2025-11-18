@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste de Noël</title>
+<style>
+    body {
+        font-family: "Comic Sans MS", cursive;
+        background: #fff5f5;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        background: #ffe8cc;
+        border: 4px solid #d9b777;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 20px;
+        color: #b30000;
+        font-size: 32px;
+    }
+
+    button {
+        background: #c41212;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    button:hover {
+        background: #a10f0f;
+    }
+
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    th {
+        background: #b00000;
+        color: white;
+        padding: 12px;
+        font-size: 18px;
+    }
+
+    td {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    input {
+        width: 90%;
+        padding: 6px;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+    }
+
+    .delete-btn {
+        background: #880000;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+    }
+    .delete-btn:hover {
+        background: #660000;
+    }
+
+    .validated {
+        background: #e0e0e0;
+        opacity: 0.7;
+    }
+</style>
+</head>
+<body>
+
+<h1>Liste de Noël – Pierre, Nathalya & Toffee & Topito 🎅🐾</h1>
+
+<button onclick="addRow()">+ Ajouter un cadeau</button>
+
+<table id="giftTable">
+    <tr>
+        <th>🎁 Personne</th>
+        <th>🎄 Cadeau</th>
+        <th>💰 Prix</th>
+        <th>🔗 Lien</th>
+        <th>✔ Valider</th>
+        <th>🗑 Supprimer</th>
+    </tr>
+</table>
+
+<script>
+function addRow() {
+    const table = document.getElementById("giftTable");
+    const row = table.insertRow(-1);
+
+    row.innerHTML = `
+        <td><input type="text" placeholder="Nom"></td>
+        <td><input type="text" placeholder="Cadeau"></td>
+        <td><input type="text" placeholder="Prix"></td>
+        <td><input type="text" placeholder="Lien"></td>
+        <td><input type="checkbox" onclick="validateRow(this)"></td>
+        <td><button class="delete-btn" onclick="deleteRow(this)">X</button></td>
+    `;
+}
+
+function deleteRow(btn) {
+    btn.parentNode.parentNode.remove();
+}
+
+function validateRow(checkbox) {
+    const row = checkbox.parentNode.parentNode;
+    const inputs = row.querySelectorAll("input[type='text']");
+
+    if (checkbox.checked) {
+        inputs.forEach(input => input.disabled = true);
+        row.classList.add("validated");
+    } else {
+        inputs.forEach(input => input.disabled = false);
+        row.classList.remove("validated");
+    }
+}
+</script>
+
+</body>
+</html>
