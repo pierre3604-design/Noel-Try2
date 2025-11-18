@@ -2,135 +2,270 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Liste de Noël</title>
+<title>Noël – Cadeaux & Calendrier</title>
+
 <style>
-    body {
-        font-family: "Comic Sans MS", cursive;
-        background: #fff5f5;
-        text-align: center;
-        margin: 0;
-        padding: 0;
-    }
+/* ------------------ STYLE GÉNÉRAL ------------------ */
 
-    h1 {
-        background: #ffe8cc;
-        border: 4px solid #d9b777;
-        padding: 20px;
-        margin: 20px;
-        border-radius: 20px;
-        color: #b30000;
-        font-size: 32px;
-    }
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(#ffefef, #ffe0e0);
+    margin: 0;
+    text-align: center;
+}
 
-    button {
-        background: #c41212;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 18px;
-        margin-bottom: 20px;
-    }
-    button:hover {
-        background: #a10f0f;
-    }
+h1 {
+    background: #b30000;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    box-shadow: 0 0 15px #660000;
+}
 
-    table {
-        width: 90%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-    }
+nav {
+    background: #8d0000;
+    padding: 15px;
+}
 
-    th {
-        background: #b00000;
-        color: white;
-        padding: 12px;
-        font-size: 18px;
-    }
+nav button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    margin: 0 20px;
+    cursor: pointer;
+}
 
-    td {
-        border-bottom: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
-    }
+nav button:hover {
+    text-decoration: underline;
+}
 
-    input {
-        width: 90%;
-        padding: 6px;
-        border: 1px solid #bbb;
-        border-radius: 6px;
-    }
+section { display: none; }
+section.active { display: block; }
 
-    .delete-btn {
-        background: #880000;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        border: none;
-    }
-    .delete-btn:hover {
-        background: #660000;
-    }
+/* ------------------ TABLE CADEAUX ------------------ */
 
-    .validated {
-        background: #e0e0e0;
-        opacity: 0.7;
-    }
+button {
+    background: #d40000;
+    color: white;
+    padding: 10px 20px;
+    margin: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #a00000;
+}
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+th {
+    background: #b30000;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.delete-btn {
+    background: #700000;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #500000;
+}
+
+/* ------------------ CALENDRIER DE L’AVENT ------------------ */
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.day {
+    background: #ffffff;
+    border: 2px solid #b30000;
+    padding: 25px;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.day img {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.locked {
+    background: #ffd5d5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.locked::after {
+    content: "🔒";
+    position: absolute;
+    font-size: 40px;
+    top: 35%;
+    left: 45%;
+}
 </style>
 </head>
 <body>
 
-<h1>Liste de Noël – Pierre, Nathalya & Toffee & Topito 🎅🐾</h1>
+<h1>🎄 Noël – Cadeaux & Calendrier 🎁</h1>
 
-<button onclick="addRow()">+ Ajouter un cadeau</button>
+<nav>
+    <button onclick="showTab('cadeaux')">🎁 Liste des cadeaux</button>
+    <button onclick="showTab('avent')">🎄 Calendrier de l'Avent</button>
+</nav>
 
-<table id="giftTable">
-    <tr>
-        <th>🎁 Personne</th>
-        <th>🎄 Cadeau</th>
-        <th>💰 Prix</th>
-        <th>🔗 Lien</th>
-        <th>✔ Valider</th>
-        <th>🗑 Supprimer</th>
-    </tr>
+<!-- ------------------ ONGLET CADEAUX ------------------ -->
+
+<section id="cadeaux" class="active">
+
+<button onclick="addRow()">➕ Ajouter un cadeau</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Personne</th>
+            <th>Cadeau</th>
+            <th>Prix</th>
+            <th>Lien</th>
+            <th>✔</th>
+            <th>🗑</th>
+        </tr>
+    </thead>
+    <tbody id="giftTable"></tbody>
 </table>
 
+</section>
+
+<!-- ------------------ ONGLET CALENDRIER ------------------ -->
+
+<section id="avent">
+    <h2>🎅 Calendrier de l'Avent 2025 🎁</h2>
+    <div class="calendar" id="calendar"></div>
+</section>
+
 <script>
-function addRow() {
+/* ------------------ NAVIGATION ENTRE ONGLET ------------------ */
+
+function showTab(id) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+/* ------------------ TABLE LISTE CADEAUX ------------------ */
+
+function addRow(person="", gift="", price="", link="", validated=false) {
     const table = document.getElementById("giftTable");
-    const row = table.insertRow(-1);
+    const row = document.createElement("tr");
 
     row.innerHTML = `
-        <td><input type="text" placeholder="Nom"></td>
-        <td><input type="text" placeholder="Cadeau"></td>
-        <td><input type="text" placeholder="Prix"></td>
-        <td><input type="text" placeholder="Lien"></td>
-        <td><input type="checkbox" onclick="validateRow(this)"></td>
-        <td><button class="delete-btn" onclick="deleteRow(this)">X</button></td>
+        <td><input type="text" value="${person}"></td>
+        <td><input type="text" value="${gift}"></td>
+        <td><input type="text" value="${price}"></td>
+        <td><input type="text" value="${link}"></td>
+        <td><input type="checkbox" ${validated ? "checked" : ""}></td>
+        <td><button class="delete-btn">Suppr</button></td>
     `;
+
+    /* Validation */
+    const checkbox = row.querySelector("input[type='checkbox']");
+    checkbox.onchange = () => saveTable();
+
+    /* Suppression */
+    row.querySelector(".delete-btn").onclick = () => {
+        row.remove();
+        saveTable();
+    };
+
+    table.appendChild(row);
 }
 
-function deleteRow(btn) {
-    btn.parentNode.parentNode.remove();
+/* ------------------ SAUVEGARDE ------------------ */
+
+function saveTable() {
+    const rows = [];
+    document.querySelectorAll("#giftTable tr").forEach(tr => {
+        const cells = tr.querySelectorAll("input");
+        rows.push({
+            person: cells[0].value,
+            gift: cells[1].value,
+            price: cells[2].value,
+            link: cells[3].value,
+            validated: cells[4].checked
+        });
+    });
+
+    localStorage.setItem("giftList", JSON.stringify(rows));
 }
 
-function validateRow(checkbox) {
-    const row = checkbox.parentNode.parentNode;
-    const inputs = row.querySelectorAll("input[type='text']");
+function loadTable() {
+    const data = JSON.parse(localStorage.getItem("giftList") || "[]");
+    data.forEach(r => addRow(r.person, r.gift, r.price, r.link, r.validated));
+}
 
-    if (checkbox.checked) {
-        inputs.forEach(input => input.disabled = true);
-        row.classList.add("validated");
-    } else {
-        inputs.forEach(input => input.disabled = false);
-        row.classList.remove("validated");
+/* ------------------ CALENDRIER DE L’AVENT ------------------ */
+
+function loadCalendar() {
+    const today = new Date();
+    const calendar = document.getElementById("calendar");
+
+    for (let i = 1; i <= 24; i++) {
+        const tile = document.createElement("div");
+        tile.classList.add("day");
+
+        const isUnlocked =
+            i === 1 ||
+            (today.getMonth() === 10 && today.getDate() >= i) ||  // Novembre (dev)
+            (today.getMonth() === 11 && today.getDate() >= i);    // Décembre (réel)
+
+        if (!isUnlocked) tile.classList.add("locked");
+
+        tile.innerHTML = isUnlocked
+            ? `${i}`
+            : `${i}`;
+
+        tile.onclick = () => {
+            if (tile.classList.contains("locked")) return;
+            tile.innerHTML = `${i}<img src="images/jour${i}.jpg">`;
+        };
+
+        calendar.appendChild(tile);
     }
 }
+
+/* ------------------ INIT ------------------ */
+
+loadCalendar();
+loadTable();
 </script>
 
 </body>
